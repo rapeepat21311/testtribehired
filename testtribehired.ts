@@ -137,8 +137,7 @@ function QuickesPath(board: {
         sum = num[1];
       }
     });
-    if (sum > 100) {
-    }
+
     if (sum === 100) {
       if (quickPath.length <= findShortestPath(board).length) {
         return quickPath;
