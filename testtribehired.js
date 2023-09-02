@@ -63,10 +63,11 @@ console.log(
 // Answer Three
 function QuickesPath(board) {
   const allPath = [];
+  let max = 1000;
   let sum = 1;
   let quickPath = [];
 
-  for (; sum <= 100; ) {
+  for (let loop = 0; loop <= max; loop++) {
     let dice = Math.floor(Math.random() * 6) + 1;
 
     quickPath.push(dice);
@@ -93,8 +94,9 @@ function QuickesPath(board) {
       continue;
     }
   }
-
-  if (quickPath.length !== ShortestPath(board).length) {
+  const shorttestPathLength = ShortestPath(board).length;
+  console.log(shorttestPathLength);
+  if (quickPath.length !== shorttestPathLength) {
     return QuickesPath(board);
   }
 
@@ -142,17 +144,10 @@ console.log(
   "randomPath :",
   QuickesPath({
     ladders: [
-      [3, 99],
-      [14, 35],
-      [31, 70],
-      [44, 65],
-     
+      [44, 99],
+      [60, 88],
     ],
     snakes: [
-      [21, 4],
-      [30, 8],
-      [55, 38],
-      [79, 42],
       [87, 54],
       [91, 48],
       [96, 66],

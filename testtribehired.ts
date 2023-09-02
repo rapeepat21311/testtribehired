@@ -68,48 +68,7 @@ console.log(
 );
 
 // Answer Three
-function QuickesPath(board: {
-  ladders: [number, number][];
-  snakes: [number, number][];
-}): number[] {
-  const allPath: number[][] = [];
-  let sum: number = 1;
-  let quickPath: number[] = [];
-
-  for (; sum <= 100; ) {
-    let tao = Math.floor(Math.random() * 6) + 1;
-
-    quickPath.push(tao);
-    sum += tao;
-
-    board.ladders.forEach((num) => {
-      if (sum === num[0]) {
-        sum = num[1];
-      }
-    });
-    board.snakes.forEach((num) => {
-      if (sum === num[0]) {
-        sum = num[1];
-      }
-    });
-
-    if (sum === 100) {
-      break;
-    } else if (sum > 100) {
-      sum = 1;
-      // continue;
-    }
-  }
-
-  if (quickPath.length !== ShortestPath(board).length) {
-    return QuickesPath(board);
-  }
-  {
-    return quickPath;
-  }
-}
-
-function ShortestPath(board: {
+function findShortestPath(board: {
   ladders: [number, number][];
   snakes: [number, number][];
 }): number[] {
@@ -117,7 +76,7 @@ function ShortestPath(board: {
   const queue: [number, number[]][] = [[1, []]];
 
   while (queue.length > 0) {
-    const [currentPosition, currentPath] = queue.shift()!;
+    let [currentPosition, currentPath] = queue.shift()!;
     if (currentPosition === 100) {
       return currentPath;
     }
@@ -131,12 +90,16 @@ function ShortestPath(board: {
     // console.log(visited)
     for (let dice = 1; dice <= 6; dice++) {
       const nextPosition = currentPosition + dice;
+      if (currentPosition > 100) {
+        console.log("ss");
+        return [];
+      }
       const ladder = board.ladders.find(
         ([start, end]) => start === nextPosition
       );
       const snake = board.snakes.find(([head, tail]) => head === nextPosition);
       const newPath = [...currentPath, dice];
-
+      // console.log("SRRRR");
       if (ladder) {
         queue.push([ladder[1], newPath]);
       } else if (snake) {
@@ -150,23 +113,67 @@ function ShortestPath(board: {
   return [];
 }
 
+function QuickesPath(board: {
+  ladders: [number, number][];
+  snakes: [number, number][];
+}): number[] {
+  let max: number = 100;
+  let quickPath: number[] = [];
+  let sum: number = 1;
+
+  while (sum !== 100) {
+    const dice = Math.floor(Math.random() * 6) + 1;
+
+    quickPath.push(dice);
+    sum += dice;
+
+    board.ladders.forEach((num) => {
+      if (sum === num[0]) {
+        sum = num[1];
+      }
+    });
+    board.snakes.forEach((num) => {
+      if (sum === num[0]) {
+        sum = num[1];
+      }
+    });
+    if (sum > 100) {
+    }
+    if (sum === 100) {
+      if (quickPath.length <= findShortestPath(board).length) {
+        return quickPath;
+      } else {
+        sum = 1;
+        quickPath = [];
+      }
+    } else if (sum > 100) {
+      // console.log({ quickPath: quickPath, sum: sum });
+      sum -= dice;
+      quickPath.push(dice);
+      if (quickPath.length <= findShortestPath(board).length) {
+        return quickPath;
+      } else {
+        sum = 1;
+        quickPath = [];
+      }
+      // console.log({ quickPath1: quickPath, sum1: sum });
+    }
+  }
+  return [];
+}
+
 console.log(
-  "randomPath :",
+  "quickerPath :",
   QuickesPath({
     ladders: [
-      [5, 47],
-      [14, 35],
-      [31, 70],
-      [44, 65],
+      [11, 32],
+      [29, 41],
+      [59, 88],
     ],
     snakes: [
-      [21, 4],
-      [30, 8],
-      [55, 38],
-      [79, 42],
-      [87, 54],
-      [91, 48],
-      [96, 66],
+      [97, 7],
+      [83, 2],
+      [65, 99],
     ],
   })
 );
