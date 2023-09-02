@@ -76,7 +76,7 @@ function QuickesPath(board: {
   let sum: number = 1;
   let quickPath: number[] = [];
 
-  for (; sum === 100; ) {
+  for (; sum <= 100; ) {
     let tao = Math.floor(Math.random() * 6) + 1;
 
     quickPath.push(tao);
@@ -92,15 +92,12 @@ function QuickesPath(board: {
         sum = num[1];
       }
     });
-    
+
     if (sum === 100) {
       break;
     } else if (sum > 100) {
-      // console.log("sum > 100", sum);
       sum = 1;
-      continue;
-    } else {
-      continue;
+      // continue;
     }
   }
 
@@ -157,13 +154,10 @@ console.log(
   "randomPath :",
   QuickesPath({
     ladders: [
-      [3, 39],
+      [5, 47],
       [14, 35],
       [31, 70],
       [44, 65],
-      [47, 86],
-      [63, 83],
-      [71, 93],
     ],
     snakes: [
       [21, 4],
