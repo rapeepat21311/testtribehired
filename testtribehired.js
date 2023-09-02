@@ -1,5 +1,5 @@
 // Answer One
-function calculateClockAngles(time: string): number {
+function calculateClockAngles(time) {
   const timeParts = time.split(":");
 
   if (timeParts.length !== 2) {
@@ -11,7 +11,7 @@ function calculateClockAngles(time: string): number {
 
   const hourAngle = ((hour % 12) + minute / 60) * 30;
   const minuteAngle = minute * 6;
-  //   console.log(hourAngle, minuteAngle);
+
   let angleDifference = Math.abs(hourAngle - minuteAngle);
   if (angleDifference > 180) {
     angleDifference = 360 - angleDifference;
@@ -23,7 +23,7 @@ function calculateClockAngles(time: string): number {
 console.log(calculateClockAngles("9:12"));
 
 // Answer Two
-function removeCommonWordInStringArr(strings: string[]): string[] {
+function removeCommonWordInStringArr(strings) {
   if (strings.length === 0) {
     return [""];
   }
@@ -35,13 +35,6 @@ function removeCommonWordInStringArr(strings: string[]): string[] {
   for (let i = 0; i < length; i++) {
     for (let j = i + 1; j <= length; j++) {
       const substring = strings[0].substring(i, j);
-      // console.log({
-      //   substring: substring,
-      //   i: i,
-      //   j: j,
-      //   stingLength: strings.length,
-      //   //   isCommon: isCommon,
-      // });
       let isCommon = true;
 
       for (let k = 1; k < strings.length; k++) {
@@ -52,7 +45,6 @@ function removeCommonWordInStringArr(strings: string[]): string[] {
       }
 
       if (isCommon && substring.length > longestLength) {
-        //   console.log({ "117": substring });
         longestCommonSubstring = substring;
         longestLength = substring.length;
       }
@@ -63,24 +55,22 @@ function removeCommonWordInStringArr(strings: string[]): string[] {
     str.replace(longestCommonSubstring, "").toUpperCase()
   );
 }
+
 console.log(
   removeCommonWordInStringArr(["BEFRIEND", "GIRLFRIEND", "FRIENDSHIP"])
 );
 
 // Answer Three
-function QuickesPath(board: {
-  ladders: [number, number][];
-  snakes: [number, number][];
-}): number[] {
-  const allPath: number[][] = [];
-  let sum: number = 1;
-  let quickPath: number[] = [];
+function QuickesPath(board) {
+  const allPath = [];
+  let sum = 1;
+  let quickPath = [];
 
-  for (; sum === 100; ) {
-    let tao = Math.floor(Math.random() * 6) + 1;
+  for (; sum <= 100; ) {
+    let dice = Math.floor(Math.random() * 6) + 1;
 
-    quickPath.push(tao);
-    sum += tao;
+    quickPath.push(dice);
+    sum += dice;
 
     board.ladders.forEach((num) => {
       if (sum === num[0]) {
@@ -92,7 +82,7 @@ function QuickesPath(board: {
         sum = num[1];
       }
     });
-    
+    // console.log(sum);
     if (sum === 100) {
       break;
     } else if (sum > 100) {
@@ -107,31 +97,26 @@ function QuickesPath(board: {
   if (quickPath.length !== ShortestPath(board).length) {
     return QuickesPath(board);
   }
-  {
-    return quickPath;
-  }
+
+  return quickPath;
 }
 
-function ShortestPath(board: {
-  ladders: [number, number][];
-  snakes: [number, number][];
-}): number[] {
-  const visited: Set<number> = new Set();
-  const queue: [number, number[]][] = [[1, []]];
+function ShortestPath(board) {
+  const visited = new Set();
+  const queue = [[1, []]];
 
   while (queue.length > 0) {
-    const [currentPosition, currentPath] = queue.shift()!;
+    const [currentPosition, currentPath] = queue.shift();
     if (currentPosition === 100) {
       return currentPath;
     }
 
     if (visited.has(currentPosition)) {
-      // console.log(visited.has(currentPosition));
       continue;
     }
 
     visited.add(currentPosition);
-    // console.log(visited)
+
     for (let dice = 1; dice <= 6; dice++) {
       const nextPosition = currentPosition + dice;
       const ladder = board.ladders.find(
